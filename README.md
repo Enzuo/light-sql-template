@@ -1,11 +1,10 @@
 #What is it ?
 
 sql-Moduleon is a very simple template engine for .sql
+- no sql file loading, no database query execution
+- just the parsing of your sql template
 
-no sql file loading, no database query execution
-
-just the parsing of your sql template
-
+###Logic
 
 - Write your .sql with templates tags
 - **Transform your sql into a template function** *<-- sql-Moduleon's job*
@@ -37,19 +36,24 @@ just the parsing of your sql template
 
 ```
 var moduleon = require('sql-moduleon');
-var fs = require('fs');
+moduleon.setConfig({engine:'pg'});
 
+var fs = require('fs');
 var sql = fs.readFileSync('./your/sqlfile.sql').toString();
 
-//get the templating function corresponding to your sql file
-//If 'filename' has already been registered it'll return the already parsed function
-//If no sql is provided and 'filename' hasn't been registered it will return false
 var sqlTemplateFunction = moduleon( 'filename' , sql );
-
 var sqlRequest = sqlTemplateFunction({ key : value });
 
 //use your DB enigne to execute the generated request 
 db.query(sqlRequest.sql, sqlRequest.values);
+```
+
+sql-Moduleon remembers the template from one use to the other and you can parse your sql only once
+```
+var sqlt = moduleon( 'filename' )
+if( sqlt === false){
+	sqlt = moduleon( 'filename' , sql );
+}
 ```
 
 #Installation
@@ -63,4 +67,4 @@ npm install --dev
 npm test
 ```
 
-This module was tested in a postgres environement
+This module was tested in a postgres environement and may not work with other DBMS
