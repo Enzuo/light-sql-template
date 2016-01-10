@@ -33,14 +33,12 @@ module.exports = function( templateName, sql ) {
  */
 function generateFunction( sql ){
 
-	//var _code = "var out = 'hello'";
-	//sql = 'SELECT * FROM {{= hello }} FROM {{? hello }} only if hello {{?}}';
 	var tb = '{{';
 	var te = '}}';
 	var varname = 'data';
 	var _code = '';
 
-	var arr = sql.replace(/\s*<!\[CDATA\[\s*|\s*\]\]>\s*|[\r\n\t]|(\/\*[\s\S]*?\*\/)/g, '')
+	var arr = sql.replace(/\s*<!\[CDATA\[\s*|\s*\]\]>\s*|[\r\n\t]|(\/\*[\s\S]*?\*\/)/g, ' ')
 		.split(tb).join(te +'\x1b')
 		.split(te);
 
@@ -81,7 +79,7 @@ function generateFunction( sql ){
 	try {
 		return new Function( varname, _code);
 	} catch (e) {
-		if (typeof console !== 'undefined') console.log("Could not create a template function: " + _code);
+		if (typeof console !== 'undefined') console.log('Could not create a template function: ' + _code);
 		throw e;
 	}
 }

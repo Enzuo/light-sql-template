@@ -10,9 +10,7 @@ describe('Global usage', function() {
 
   	var tplFunc = lsqlt('my_tpl', 'SELECT * FROM table');
 
-  	console.log(JSON.stringify( tplFunc.toString(), null, 2 ));
-
-  	(typeof tplFunc).should.be.equal('function');
+  	(tplFunc).should.be.a.Function();
 
     done();
   });
@@ -20,14 +18,14 @@ describe('Global usage', function() {
   it('should retrieve already created templates instead of creating new ones', function(done) {
 
   	var tplFunc = lsqlt('remaining_tpl', 'SELECT * FROM table');
-  	(typeof tplFunc).should.be.equal('function');
+  	(tplFunc).should.be.a.Function();
 
   	var tplFunc2 = lsqlt('remaining_tpl', 'DROP TABLE');
-  	(typeof tplFunc2).should.be.equal('function');
+  	(tplFunc2).should.be.a.Function();
 
   	//tplFunc2 should be equal to tplFunc and not equal to tplFunc3
   	var tplFunc3 = lsqlt('3_tpl', 'DROP TABLE');
-  	(typeof tplFunc3).should.be.equal('function');		
+  	(tplFunc3).should.be.a.Function();	
 
   	//2 == 1
   	(tplFunc2.toString()).should.be.equal(tplFunc.toString());
@@ -52,7 +50,7 @@ describe('Global usage', function() {
     done(); 	
   });
 
-  it.only('should be able to handle messy sql strings', function(done){
+  it('should be able to handle messy sql strings', function(done){
 
 		var sql = fs.readFileSync(__dirname + '/in.sql').toString();
 
