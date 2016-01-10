@@ -18,7 +18,7 @@ just the parsing of your sql template
 
 		{{? value }} SELECT * FROM table {{?}}
 
-	will add the sql inbetween the tags only if he condition is fullfilled
+	will add the sql inbetween the tags only if the condition is fullfilled
 
 - **Value**
 
@@ -54,9 +54,13 @@ db.query(sqlRequest.sql, sqlRequest.values);
 
 #Installation
 
+`npm install sql-moduleon --save`
+
 ##tests
 
 ```
 npm install --dev
 npm test
 ```
+
+This module was tested in a postgres environement
