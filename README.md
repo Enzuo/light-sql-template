@@ -29,3 +29,10 @@ var sqlObj = sqltFunc({ key : value });
 //use your DB enigne to execute the generated request 
 db.query(sqlObj.sql, sqlObj.values);
 ```
+
+#Installation
+
+##tests
+
+`npm install --dev`
+`npm test`
