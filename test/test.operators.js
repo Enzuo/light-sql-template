@@ -40,7 +40,7 @@ describe('Operators : template tags', function() {
   	var tplFunc = lsqlt('operators_several_value_tpl', _sql);
   	var request_obj = tplFunc({ id: 3 , idUser : 42 });
 
-    	//sql
+    //sql
   	assert.equal(request_obj.sql   , 'SELECT * FROM table WHERE iduser = ? AND id = ?');
 
   	//values

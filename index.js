@@ -42,21 +42,18 @@ function generateFunction( sql ){
 		.split(tb).join(te +'\x1b')
 		.split(te);
 
-	console.log(arr);
-
-
 	for (var m=0, l=arr.length; m < l; m++) {
 		if( arr[m].charAt(0) !== '\x1b' ){
-			_code += "out+='" + arr[m].replace(/(\\|["'])/g, '\\$1') + "'";
+			_code += 'out+=\'' + arr[m].replace(/(\\|["'])/g, '\\$1') + '\'';
 
 		}
 		else{			
 			if(arr[m].charAt(1) === '='){
-				_code += ';out+=( "?" );';
+				_code += ';out+=( \'?\' );';
 				_code += 'vals.push(' + varname + '.' + arr[m].substr(2).replace(/\s/g, '') + ');';
 			}
 			else if(arr[m].charAt(1) === '?' && arr[m].length === 2){
-				_code += "}";
+				_code += '}';
 			}
 			else if(arr[m].charAt(1) === '?'){
 				_code += ';if(' ;
@@ -69,14 +66,12 @@ function generateFunction( sql ){
 		}
 	}
 
-
-
 	_code = ('var vals = [], out="";'+_code+';return { sql:out, values:vals };')
-		.split("out+='';").join('')
+		.split('out+=\'\';').join('')
 		.split('var out="";out+=').join('var out=');
-	console.log(_code);
 
 	try {
+		/*jslint evil: true */
 		return new Function( varname, _code);
 	} catch (e) {
 		if (typeof console !== 'undefined') console.log('Could not create a template function: ' + _code);
