@@ -7,8 +7,8 @@ sql-Moduleon is a very simple template engine for .sql
 ###Logic
 
 - Write your .sql with templates tags
-- **Transform your sql into a template function** *<-- sql-Moduleon's job*
-- Use this function to create sql requests
+- Load your .sql files
+- **Transform your sql into a template function and generate requests** *<-- sql-Moduleon's job*
 - Pass those requests to your query engine
 
 #Available templates tags
