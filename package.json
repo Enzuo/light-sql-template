@@ -1,6 +1,6 @@
 {
   "name": "sql-moduleon",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A lightweight module used to process .sql templates tags",
   "main": "index.js",
   "scripts": {

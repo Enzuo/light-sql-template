@@ -12,8 +12,8 @@ sql-Moduleon is a very simple template engine for .sql
 - Pass those requests to your query engine
 
 #Available templates tags
-	
-- **Condition** 
+
+- **Condition**
 
 		{{? value }} SELECT * FROM table {{?}}
 
@@ -21,20 +21,20 @@ sql-Moduleon is a very simple template engine for .sql
 
 - **Value**
 
-		SELECT * FROM table WHERE id = {{= value }} 
+		SELECT * FROM table WHERE id = {{= value }}
 
-	will replace this tag by a ? and fill the array values
+	will replace this tag by a sql parameter (?) and add value to the values array
 
 - **Javascript Code** (not yet implemented)
 
- 		SELECT * FROM {{ out += '"Table"'; }} 
+ 		SELECT * FROM {{ out += '"Table"'; }}
 
  	simply throw in javascript code in the template function
 
 
 #Usage
 
-```
+```javascript
 var moduleon = require('sql-moduleon');
 moduleon.setConfig({engine:'pg'});
 
@@ -44,12 +44,12 @@ var sql = fs.readFileSync('./your/sqlfile.sql').toString();
 var sqlTemplateFunction = moduleon( 'filename' , sql );
 var sqlRequest = sqlTemplateFunction({ key : value });
 
-//use your DB enigne to execute the generated request 
+//use your DB enigne to execute the generated request
 db.query(sqlRequest.sql, sqlRequest.values);
 ```
 
 sql-Moduleon remembers the template from one use to the other and you can parse your sql only once
-```
+```javascript
 var sqlt = moduleon( 'filename' )
 if( sqlt === false){
 	sqlt = moduleon( 'filename' , sql );
