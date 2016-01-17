@@ -1,6 +1,6 @@
 'use strict';
 
-var sql_templates_func = {};	
+var sql_templates_func = {};
 
 // Declare defaults options or take provided options
 // =================================================
@@ -19,7 +19,7 @@ var config = {
  * @param  {String} templateName : Unique name for the template function, for reusability
  * @param  {String} sql 				 : Sql template to parse
  * @param  {Object} opts (Optional) :
- * 
+ *
  * @return {Function} template function
  * 					{Boolean} false if it couldn't find the requested template and no sql was provided
  */
@@ -32,25 +32,20 @@ module.exports = function( templateName, sql ) {
 	var tplFunc = sql_templates_func[ templateName ];
 
 	if(typeof tplFunc === 'function'){
-		return tplFunc;
-
-		//TODO regenerate anyway if sql is passed to moduleon
+		if(typeof sql === 'undefined'){
+			return tplFunc;
+		}
 	}
-
 	else{
 		if(typeof sql === 'undefined'){
 			return false;
 		}
-		//generate the function if SQL was provided
-		else{
-
-			tplFunc = generateFunction( sql );
-
-			sql_templates_func[ templateName ] = tplFunc ;
-
-			return tplFunc;
-		}
+	//generate the function if SQL was provided
 	}
+
+	tplFunc = generateFunction( sql );
+	sql_templates_func[ templateName ] = tplFunc ;
+	return tplFunc;
 };
 
 module.exports.setConfig = function( opts ){
@@ -78,7 +73,7 @@ function generateFunction( sql ){
 			_code += 'out+=\'' + arr[m].replace(/(\\|["'])/g, '\\$1') + '\'';
 
 		}
-		else{			
+		else{
 			if(arr[m].charAt(1) === '='){
 				_code += ';vals.push(' + varname + '.' + arr[m].substr(2).replace(/\s/g, '') + ');';
 				_code += _codeAddSqlParameter();

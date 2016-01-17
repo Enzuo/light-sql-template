@@ -20,12 +20,12 @@ describe('Global usage', function() {
   	var tplFunc = lsqlt('remaining_tpl', 'SELECT * FROM table');
   	(tplFunc).should.be.a.Function();
 
-  	var tplFunc2 = lsqlt('remaining_tpl', 'DROP TABLE');
+  	var tplFunc2 = lsqlt('remaining_tpl');
   	(tplFunc2).should.be.a.Function();
 
   	//tplFunc2 should be equal to tplFunc and not equal to tplFunc3
-  	var tplFunc3 = lsqlt('3_tpl', 'DROP TABLE');
-  	(tplFunc3).should.be.a.Function();	
+  	var tplFunc3 = lsqlt('remaining_tpl', 'DROP TABLE');
+  	(tplFunc3).should.be.a.Function();
 
   	//2 == 1
   	(tplFunc2.toString()).should.be.equal(tplFunc.toString());
@@ -47,7 +47,7 @@ describe('Global usage', function() {
   	var lsqlt = require('../index');
    	var tplFunc = lsqlt('my_tpl', 'SELECT * FROM table');
   	(tplFunc).should.be.a.Function();
-    done(); 	
+    done();
   });
 
   it('should be able to handle messy sql strings', function(done){
@@ -65,7 +65,7 @@ describe('Global usage', function() {
 		console.log('------------SQL-------> ', sqlObj.sql);
 
 		done();
-  
+
   });
 
 });
