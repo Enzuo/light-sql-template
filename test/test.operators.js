@@ -20,7 +20,7 @@ describe('Operators : template tags', function() {
   it('should replace the operator {{= id }} by ? in the sql and add the value to the values array ', function (done) {
 
   	var _sql = 'SELECT * FROM table WHERE id = {{= id}}';
-  	
+
   	var tplFunc = lsqlt('operators_value_tpl', _sql);
   	var request_obj = tplFunc({ id: 3 });
 
@@ -46,7 +46,7 @@ describe('Operators : template tags', function() {
   	//values
   	assert.equal(request_obj.values.length, 2);
   	assert.equal(request_obj.values[0], 42 );
-  	assert.equal(request_obj.values[1], 3 );		  	
+  	assert.equal(request_obj.values[1], 3 );
 
   	done();
   });
@@ -54,7 +54,7 @@ describe('Operators : template tags', function() {
   it('should not add sql code between conditions tags {{?}} when the condition is false', function (done){
 
   	var _sql = 'SELECT * {{? id }} FROM table {{?}}';
-  	
+
   	var tplFunc = lsqlt('operators_condition_false_tpl', _sql);
   	var request_obj = tplFunc({ id: false });
 
@@ -65,7 +65,7 @@ describe('Operators : template tags', function() {
   it('should not add sql code between conditions tags {{?}} when the condition variable is undefined', function (done){
 
   	var _sql = 'SELECT * {{? id }} FROM table {{?}}';
-  	
+
   	var tplFunc = lsqlt('operators_condition_undefined_tpl', _sql);
   	var request_obj = tplFunc({});
 
@@ -76,7 +76,7 @@ describe('Operators : template tags', function() {
   it('should add sql code between conditions tags {{?}} when the condition is true', function (done){
 
   	var _sql = 'SELECT * {{? id }} FROM table {{?}}';
-  	
+
   	var tplFunc = lsqlt('operators_condition_true_tpl', _sql);
   	var request_obj = tplFunc({ id: true });
 
@@ -87,7 +87,7 @@ describe('Operators : template tags', function() {
   it('should add {{= value }} between conditions tags {{?}} when the condition is true', function (done){
 
   	var _sql = 'SELECT * FROM table {{? id }} WHERE id = {{= value }} {{?}}';
-  	
+
   	var tplFunc = lsqlt('operators_condition_true_value_tpl', _sql);
   	var request_obj = tplFunc({ id: true , value : 42 });
 
@@ -103,7 +103,7 @@ describe('Operators : template tags', function() {
   it('should not add {{= value }} between conditions tags {{?}} when the condition is false', function (done){
 
   	var _sql = 'SELECT * FROM table {{? id }} WHERE id = {{= value }} {{?}}';
-  	
+
   	var tplFunc = lsqlt('operators_condition_true_value_false', _sql);
   	var request_obj = tplFunc({ id: false , value : 42 });
 
@@ -113,5 +113,21 @@ describe('Operators : template tags', function() {
   	//values
   	assert.equal(request_obj.values.length, 0);
   	done();
+  });
+
+  it('should append javascript as is with {{ code }}', function (done){
+    var _sql = 'SELECT * FROM table {{ var a = 5; }} WHERE id = {{ out += a; }} AND {{ out += \'"Table"\'; }} = \'tablename\'';
+    var tplFunc = lsqlt('operators_code', _sql);
+    var request_obj = tplFunc();
+    assert.equal(request_obj.sql.trim(), 'SELECT * FROM table  WHERE id = 5 AND "Table" = \'tablename\'' );
+    done();
+  });
+
+  it('should append javascript as is with {{ code }} and do loops', function (done){
+    var _sql = '{{ for(var i=0; i < data.nbIter; i++){ }} SELECT * FROM table ; {{ } }}';
+    var tplFunc = lsqlt('operators_code', _sql);
+    var request_obj = tplFunc({nbIter: 3});
+    assert.equal(request_obj.sql.trim(), 'SELECT * FROM table ;  SELECT * FROM table ;  SELECT * FROM table ;' );
+    done();
   });
 });
