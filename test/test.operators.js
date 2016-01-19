@@ -116,10 +116,10 @@ describe('Operators : template tags', function() {
   });
 
   it('should append javascript as is with {{ code }}', function (done){
-    var _sql = 'SELECT * FROM table {{ var a = 5; }} WHERE id = {{ out += a; }} AND {{ out += \'"Table"\'; }} = \'tablename\'';
+    var _sql = 'SELECT * FROM table {{ var a = 5; }} WHERE id = {{ out += a; }} AND {{ out += \'"Column"\'; }} = \'constant\'';
     var tplFunc = lsqlt('operators_code', _sql);
     var request_obj = tplFunc();
-    assert.equal(request_obj.sql.trim(), 'SELECT * FROM table  WHERE id = 5 AND "Table" = \'tablename\'' );
+    assert.equal(request_obj.sql.trim(), 'SELECT * FROM table  WHERE id = 5 AND "Column" = \'constant\'' );
     done();
   });
 

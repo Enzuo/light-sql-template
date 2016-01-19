@@ -1,6 +1,6 @@
 #What is it ?
 
-sql-Moduleon is a very simple template engine for .sql
+sql-Moduleon is a very simple template engine for .sql running in node.js
 - no sql file loading, no database query execution
 - just the parsing of your sql template
 
@@ -25,7 +25,7 @@ sql-Moduleon is a very simple template engine for .sql
 
 	will replace this tag by a sql parameter (?) and add value to the values array
 
-- **Javascript Code** (not yet implemented)
+- **Javascript Code**
 
  		SELECT * FROM {{ out += '"Table"'; }}
 
