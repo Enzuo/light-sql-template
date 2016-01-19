@@ -4,6 +4,7 @@
   "description": "A lightweight module used to process .sql templates tags",
   "main": "index.js",
   "scripts": {
+    "preversion": "npm test",
     "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "repository": {
