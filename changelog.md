@@ -12,4 +12,4 @@
 ## 1.0.0 - 2016-01-17
 	- First release
 
-[1.1.0]: https://github.com/enzuo/sql-moduleon/compare/v1.0.0...v1.1.0
+[1.1.0]: https://github.com/enzuo/sql-moduleon/compare/1.0.0...v1.1.0
