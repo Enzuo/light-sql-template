@@ -1,6 +1,6 @@
 #What is it ?
 
-sql-Moduleon is a very simple template engine for .sql running in node.js
+sql-Moduleon is a very simple template engine for .sql, It is running in **node.js**
 - no sql file loading, no database query execution
 - just the parsing of your sql template
 
@@ -44,7 +44,7 @@ var sql = fs.readFileSync('./your/sqlfile.sql').toString();
 var sqlTemplateFunction = moduleon( 'filename' , sql );
 var sqlRequest = sqlTemplateFunction({ key : value });
 
-//use your DB enigne to execute the generated request
+//use your DB engine to execute the generated request
 db.query(sqlRequest.sql, sqlRequest.values);
 ```
 

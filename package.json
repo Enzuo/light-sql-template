@@ -29,5 +29,6 @@
   "devDependencies": {
     "mocha": "~1.16.2",
     "should": "^8.0.2"
-  }
+  },
+  "tonicExampleFilename": "example/example.js"
 }

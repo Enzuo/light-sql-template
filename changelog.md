@@ -1,6 +1,10 @@
 #Changelog
 
 
+## x.x.x - 2016-xx-xx
+	- Add an usage example for tonicdev on npm
+
+
 ## [1.1.0] - 2016-01-19
 	- Add support for tags {{ }} to write simple javascript code in your sql templates
 
