@@ -64,14 +64,13 @@ function generateFunction( sql ){
 	var varname = 'data';
 	var _code = '';
 
-	var arr = sql.replace(/\s*<!\[CDATA\[\s*|\s*\]\]>\s*|[\r\n\t]|(\/\*[\s\S]*?\*\/)/g, ' ')
+	var arr = sql.replace(/\s*<!\[CDATA\[\s*|\s*\]\]>\s*|[\r\t]|(\/\*[\s\S]*?\*\/)/g, ' ')
 		.split(tb).join(te +'\x1b')
 		.split(te);
 
 	for (var m=0, l=arr.length; m < l; m++) {
 		if( arr[m].charAt(0) !== '\x1b' ){
-			_code += 'out+=\'' + arr[m].replace(/(\\|["'])/g, '\\$1') + '\'';
-
+			_code += 'out+=\'' + arr[m].replace(/(\\|["'])/g, '\\$1').replace(/\n/g, '\\n') + '\'';
 		}
 		else{
 			if(arr[m].charAt(1) === '='){

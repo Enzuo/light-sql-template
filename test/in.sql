@@ -1,5 +1,7 @@
-SELECT 
+SELECT
 		*
+	, 'some text'::TEXT
+	, "column_name"
 
 	FROM
 

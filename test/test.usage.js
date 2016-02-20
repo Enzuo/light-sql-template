@@ -62,7 +62,8 @@ describe('Global usage', function() {
 
 		var sqlObj = sqltFunc({ id : 2 });
 
-		console.log('------------SQL-------> ', sqlObj.sql);
+		console.log('------------SQL-------> ');
+    console.log(sqlObj.sql);
 
 		done();
 

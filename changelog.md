@@ -3,6 +3,7 @@
 
 ## x.x.x - 2016-xx-xx
 	- Add an usage example for tonicdev on npm
+	- Will now keep the line breaks in the generated template
 
 
 ## [1.1.0] - 2016-01-19
