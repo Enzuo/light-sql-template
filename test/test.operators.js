@@ -2,7 +2,7 @@
 
 require('should');
 var assert = require('assert');
-var lsqlt = require('../index');
+var moduleon = require('../index');
 
 describe('Operators : template tags', function() {
 
@@ -10,7 +10,7 @@ describe('Operators : template tags', function() {
 
 		var _sql = 'SELECT * FROM table';
 
-		var tplFunc = lsqlt('operators_normal_tpl', _sql);
+		var tplFunc = moduleon(_sql);
 		var request_obj = tplFunc({});
 
 		(request_obj.sql).should.be.equal(_sql);
@@ -21,7 +21,7 @@ describe('Operators : template tags', function() {
 
 		var _sql = 'SELECT * FROM table WHERE id = {{= id}}';
 
-		var tplFunc = lsqlt('operators_value_tpl', _sql);
+		var tplFunc = moduleon(_sql);
 		var request_obj = tplFunc({ id: 3 });
 
 		//sql
@@ -37,7 +37,7 @@ describe('Operators : template tags', function() {
 
 		var _sql = 'SELECT * FROM table WHERE iduser = {{= idUser }} AND id = {{= id }}';
 
-		var tplFunc = lsqlt('operators_several_value_tpl', _sql);
+		var tplFunc = moduleon(_sql);
 		var request_obj = tplFunc({ id: 3 , idUser : 42 });
 
 		//sql
@@ -55,7 +55,7 @@ describe('Operators : template tags', function() {
 
 		var _sql = 'SELECT * {{? id }} FROM table {{?}}';
 
-		var tplFunc = lsqlt('operators_condition_false_tpl', _sql);
+		var tplFunc = moduleon(_sql);
 		var request_obj = tplFunc({ id: false });
 
 		assert.equal(request_obj.sql, 'SELECT * ');
@@ -66,7 +66,7 @@ describe('Operators : template tags', function() {
 
 		var _sql = 'SELECT * {{? id }} FROM table {{?}}';
 
-		var tplFunc = lsqlt('operators_condition_undefined_tpl', _sql);
+		var tplFunc = moduleon(_sql);
 		var request_obj = tplFunc({});
 
 		assert.equal(request_obj.sql, 'SELECT * ');
@@ -77,7 +77,7 @@ describe('Operators : template tags', function() {
 
 		var _sql = 'SELECT * {{? id }} FROM table {{?}}';
 
-		var tplFunc = lsqlt('operators_condition_true_tpl', _sql);
+		var tplFunc = moduleon(_sql);
 		var request_obj = tplFunc({ id: true });
 
 		assert.equal(request_obj.sql.trim(), 'SELECT *  FROM table');
@@ -88,7 +88,7 @@ describe('Operators : template tags', function() {
 
 		var _sql = 'SELECT * FROM table {{? id }} WHERE id = {{= value }} {{?}}';
 
-		var tplFunc = lsqlt('operators_condition_true_value_tpl', _sql);
+		var tplFunc = moduleon(_sql);
 		var request_obj = tplFunc({ id: true , value : 42 });
 
 		//sql
@@ -104,7 +104,7 @@ describe('Operators : template tags', function() {
 
 		var _sql = 'SELECT * FROM table {{? id }} WHERE id = {{= value }} {{?}}';
 
-		var tplFunc = lsqlt('operators_condition_true_value_false', _sql);
+		var tplFunc = moduleon(_sql);
 		var request_obj = tplFunc({ id: false , value : 42 });
 
 		//sql
@@ -117,7 +117,7 @@ describe('Operators : template tags', function() {
 
 	it('should append javascript as is with {{ code }}', function (done){
 		var _sql = 'SELECT * FROM table {{ var a = 5; }} WHERE id = {{ out += a; }} AND {{ out += \'"Column"\'; }} = \'constant\'';
-		var tplFunc = lsqlt('operators_code', _sql);
+		var tplFunc = moduleon(_sql);
 		var request_obj = tplFunc();
 		assert.equal(request_obj.sql.trim(), 'SELECT * FROM table  WHERE id = 5 AND "Column" = \'constant\'' );
 		done();
@@ -125,7 +125,7 @@ describe('Operators : template tags', function() {
 
 	it('should append javascript as is with {{ code }} and do loops', function (done){
 		var _sql = '{{ for(var i=0; i < data.nbIter; i++){ }} SELECT * FROM table ; {{ } }}';
-		var tplFunc = lsqlt('operators_code', _sql);
+		var tplFunc = moduleon(_sql);
 		var request_obj = tplFunc({nbIter: 3});
 		assert.equal(request_obj.sql.trim(), 'SELECT * FROM table ;  SELECT * FROM table ;  SELECT * FROM table ;' );
 		done();

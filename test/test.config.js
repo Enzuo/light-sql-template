@@ -12,7 +12,7 @@ describe('sql Moduleon config', function() {
 
 		var _sql = 'SELECT * {{= value }} {{= value2 }}';
 
-		var tplFunc = moduleon('config_pg_tpl', _sql);
+		var tplFunc = moduleon(_sql);
 		var request_obj = tplFunc({'value': 1, 'value2': 2 });
 
 		assert.equal( request_obj.sql , 'SELECT * $1 $2');

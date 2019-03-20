@@ -16,12 +16,9 @@ var config = {
 
 =====================================================================*/
 /**
- * @param  {String} templateName : Unique name for the template function, for reusability
- * @param  {String} sql 				 : Sql template to parse
  * @param  {Object} opts (Optional) :
  *
  * @return {Function} template function
- * 					{Boolean} false if it couldn't find the requested template and no sql was provided
  */
 module.exports = function( sql ) {
 	return generateFunction( sql );
