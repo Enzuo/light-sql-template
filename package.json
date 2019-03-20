@@ -11,6 +11,10 @@
     "type": "git",
     "url": "git://github.com/Enzuo/sql-moduleon"
   },
+  "files":[
+    "/example",
+    "/index.js"
+  ],
   "keywords": [
     "light",
     "template",
