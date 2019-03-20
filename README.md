@@ -1,38 +1,78 @@
-#What is it ?
+# Sql Moduleon
 
-sql-Moduleon is a very simple template engine for .sql, It is running in **node.js**
-- no sql file loading, no database query execution
-- just the parsing of your sql template
+## What is it ?
 
-###Logic
+Sql-Moduleon is a very simple template engine for sql files.
 
-- Write your .sql with templates tags
-- Load your .sql files
-- **Transform your sql into a template function and generate requests** *<-- sql-Moduleon's job*
-- Pass those requests to your query engine
+It lets you add template tags and easily write meaningful sql files, while still keeping security in mind.
 
-#Available templates tags
+## Problem it resolves 
+
+#### Before
+```sql
+UPDATE user SET 
+    surname = ?
+  , age = ?  
+  , fullname = ?
+```
+You have a complex parameterized query using several unnamed parameter.
+
+Now in your javascript code you have to generate an array paying attention to the order.
+```js
+['luke', 19, 'luke']
+```
+
+#### After
+Sql moduleon lets you instead have named parameters right in your sql. You know what you manipulate.
+
+```sql
+UPDATE user SET 
+    surname  = {{= fullname }}
+  , age      = {{= age }}  
+  , fullname = {{= fullname }}
+```
+```js
+{fullname: 'luke', age: 19}
+```
+- It lets you write plain .sql files without having to mixx it in your javascript while staying simple to build.
+
+- The javascript part doesn't have to know the query structure. It just gives it the data and the query handles it.
+
+## What it won't do for you
+
+- no sql file loading
+- no database query execution
+
+# General concept
+
+- Write your .sql files with templates tags
+- Load your templatized .sql files
+- **Transform your templatized sql into a function that generate a plain parametrized query** *<-- sql-Moduleon's job*
+- Use the generated function with your data
+- Feed the query to your database
+
+# Available templates tags
 
 - **Condition**
 
-		{{? value }} SELECT * FROM table {{?}}
+  `{{? value }} SELECT * FROM table {{?}}`
 
-	will add the sql inbetween the tags only if the condition is fullfilled
+  will add the sql inbetween the tags only if the condition is fullfilled
 
 - **Value**
 
-		SELECT * FROM table WHERE id = {{= value }}
+  `SELECT * FROM table WHERE id = {{= value }}`
 
-	will replace this tag by a sql parameter (?) and add value to the values array
+  behind the scene it will replace this tag by a sql unnamed parameter (?) and generated the values array
 
 - **Javascript Code**
 
- 		SELECT * FROM {{ out += '"Table"'; }}
+  `SELECT * FROM {{ out += '"Table"'; }}`
 
- 	simply throw in javascript code in the template function
+  simply throw in javascript code in the template function to add advanced logic
 
 
-#Usage
+# Usage example
 
 ```javascript
 var moduleon = require('sql-moduleon');
@@ -41,30 +81,26 @@ moduleon.setConfig({engine:'pg'});
 var fs = require('fs');
 var sql = fs.readFileSync('./your/sqlfile.sql').toString();
 
-var sqlTemplateFunction = moduleon( 'filename' , sql );
+// sql-moduleon
+var sqlTemplateFunction = moduleon( sql );
 var sqlRequest = sqlTemplateFunction({ key : value });
 
 //use your DB engine to execute the generated request
 db.query(sqlRequest.sql, sqlRequest.values);
 ```
 
-sql-Moduleon remembers the template from one use to the other and you can parse your sql only once
-```javascript
-var sqlt = moduleon( 'filename' )
-if( sqlt === false){
-	sqlt = moduleon( 'filename' , sql );
-}
-```
-
-#Installation
+# Installation
 
 `npm install sql-moduleon --save`
 
-##tests
+`yarn add sql-moduleon`
+
+## tests
 
 ```
 npm install --dev
 npm test
 ```
 
-This module was tested in a postgres environement and may not work with other DBMS
+This module was tested with postgres and sqlite, 
+it may not work with other DBMS
