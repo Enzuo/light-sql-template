@@ -1,6 +1,8 @@
 #Changelog
 
-## x.x.x - 2016-xx-xx
+## 2.0.0 - 2019-xx-xx
+  - Remove template management functionality. Keep the functionnality to its core, the templating engine.
+
 
 ## [1.2.0] - 2016-02-28
 	- Add an usage example for tonicdev on npm

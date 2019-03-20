@@ -23,29 +23,8 @@ var config = {
  * @return {Function} template function
  * 					{Boolean} false if it couldn't find the requested template and no sql was provided
  */
-module.exports = function( templateName, sql ) {
-
-
-
-
-	// Check if the template has already been created
-	var tplFunc = sql_templates_func[ templateName ];
-
-	if(typeof tplFunc === 'function'){
-		if(typeof sql === 'undefined'){
-			return tplFunc;
-		}
-	}
-	else{
-		if(typeof sql === 'undefined'){
-			return false;
-		}
-	//generate the function if SQL was provided
-	}
-
-	tplFunc = generateFunction( sql );
-	sql_templates_func[ templateName ] = tplFunc ;
-	return tplFunc;
+module.exports = function( sql ) {
+	return generateFunction( sql );
 };
 
 module.exports.setConfig = function( opts ){
