@@ -1,4 +1,4 @@
-# Sql Moduleon
+![SqlModuleon](logo.png?raw=truz)
 
 ## What is it ?
 
@@ -92,6 +92,8 @@ db.query(sqlRequest.sql, sqlRequest.values);
 # Installation
 
 `npm install sql-moduleon --save`
+
+or using yarn
 
 `yarn add sql-moduleon`
 
