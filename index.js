@@ -46,12 +46,12 @@ function generateFunction( sql ){
 
 	for (var m=0, l=arr.length; m < l; m++) {
 		if( arr[m].charAt(0) !== '\x1b' ){
-			_code += 'out+=\'' + arr[m].replace(/(\\|["'])/g, '\\$1').replace(/\n/g, '\\n') + '\'';
+			_code += 'out+=\'' + arr[m].replace(/(\\|["'])/g, '\\$1').replace(/\n/g, '\\n') + '\';';
 		}
 		else{
 			if(arr[m].charAt(1) === '='){
-				_code += ';vals.push(' + varname + '.' + arr[m].substr(2).replace(/\s/g, '') + ');';
-				_code += _codeAddSqlParameter();
+				// console.log(JSON.stringify(arr[m]), arr[m].replace(/[^\w]/g, '.'), arr[m].substr(2).replace(/\s/g, ''))
+				_code += pushValueCode(varname, arr[m].substr(2).replace(/\s/g, ''));
 			}
 			else if(arr[m].charAt(1) === '?' && arr[m].length === 2){
 				_code += '}';
@@ -86,13 +86,33 @@ function generateFunction( sql ){
 						Template Generator Helper Functions
 
 =================================================================*/
-function _codeAddSqlParameter(){
-	var _code = '';
+function sqlParameter(){
 	if(config.engine === 'pg'){
-		_code = 'out+=( \'$\'+ vals.length );';
+		return '( \'$\'+ vals.length )';
 	}
 	else{
-		_code += 'out+=( \'?\' );';
+		return '( \'?\' )';
 	}
+}
+
+function pushValueCode(domain, key){
+	var _code = '';
+	var valueName = domain + '.' + key;
+
+	return pushValueArrayCode(valueName);
+}
+
+
+function pushValueArrayCode(valueName){
+	var _code = '';
+	_code += 'if(Array.isArray('+valueName+')){'
+	_code += 'for(var i=0; i < '+valueName+'.length; i++){'
+	_code += 'vals.push('+valueName+'[i]);'
+	_code += 'out+= i === 0 ?' + sqlParameter() + ': \',\'+' + sqlParameter()
+	_code += '}'
+	_code += '} else {'
+	_code += 'vals.push(' + valueName + ');';
+	_code += 'out+=' + sqlParameter()		
+	_code += '}'
 	return _code;
 }
