@@ -1,7 +1,5 @@
 'use strict';
 
-var sql_templates_func = {};
-
 // Declare defaults options or take provided options
 // =================================================
 var config = {
@@ -72,7 +70,6 @@ function generateFunction( sql ){
 		// .split('var out="";out+=').join('var out=');
 
 	try {
-		/*jslint evil: true */
 		return new Function( varname, _code);
 	} catch (e) {
 		if (typeof console !== 'undefined') console.log('Could not create a template function: ' + _code);
@@ -96,7 +93,6 @@ function sqlParameter(){
 }
 
 function pushValueCode(domain, key){
-	var _code = '';
 	var valueName = domain + '.' + key;
 
 	return pushValueArrayCode(valueName);
@@ -105,14 +101,14 @@ function pushValueCode(domain, key){
 
 function pushValueArrayCode(valueName){
 	var _code = '';
-	_code += 'if(Array.isArray('+valueName+')){'
-	_code += 'for(var i=0; i < '+valueName+'.length; i++){'
-	_code += 'vals.push('+valueName+'[i]);'
-	_code += 'out+= i === 0 ?' + sqlParameter() + ': \',\'+' + sqlParameter()
-	_code += '}'
-	_code += '} else {'
+	_code += 'if(Array.isArray('+valueName+')){';
+	_code += 'for(var i=0; i < '+valueName+'.length; i++){';
+	_code += 'vals.push('+valueName+'[i]);';
+	_code += 'out+= i === 0 ?' + sqlParameter() + ': \',\'+' + sqlParameter();
+	_code += '}';
+	_code += '} else {';
 	_code += 'vals.push(' + valueName + ');';
-	_code += 'out+=' + sqlParameter()		
-	_code += '}'
+	_code += 'out+=' + sqlParameter();
+	_code += '}';
 	return _code;
 }

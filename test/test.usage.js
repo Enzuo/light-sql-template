@@ -19,7 +19,7 @@ describe('Global usage', function() {
 
 		var sql = fs.readFileSync(__dirname + '/in.sql').toString();
 
-		console.log('---------SQL before------->')
+		console.log('---------SQL before------->');
 		console.log(sql);
 
 		//get the templating function corresponding to your sql file

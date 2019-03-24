@@ -31,7 +31,8 @@
     "url": "https://github.com/Enzuo/sql-moduleon/issues"
   },
   "devDependencies": {
-    "mocha": "~1.16.2",
+    "eslint": "^5.15.3",
+    "mocha": "~6.0.2",
     "should": "^8.0.2"
   },
   "tonicExampleFilename": "example/example.js"

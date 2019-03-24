@@ -8,7 +8,7 @@ describe('sql Moduleon config', function() {
 
 	it('should be able to take into account the config', function (done) {
 
-		moduleon.setConfig({'engine': 'pg'})
+		moduleon.setConfig({'engine': 'pg'});
 
 		var _sql = 'SELECT * {{= value }} {{= value2 }}';
 
@@ -17,7 +17,7 @@ describe('sql Moduleon config', function() {
 
 		assert.equal( request_obj.sql , 'SELECT * $1 $2');
 
-		moduleon.setConfig({'engine': 'mysql'})
+		moduleon.setConfig({'engine': 'mysql'});
 
 		done();
 	});
