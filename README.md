@@ -1,4 +1,4 @@
-![SqlModuleon](logo.png?raw=truz)
+![SqlModuleon](https://raw.githubusercontent.com/Enzuo/sql-moduleon/master/logo.png)
 
 ## What is it ?
 
@@ -6,13 +6,13 @@ Sql-Moduleon is a very simple template engine for sql files.
 
 It lets you add template tags and easily write meaningful sql files, while still keeping security in mind.
 
-## Problem it resolves 
+## Problem it resolves
 
 #### Before
 ```sql
-UPDATE user SET 
+UPDATE user SET
     surname = ?
-  , age = ?  
+  , age = ?
   , fullname = ?
 ```
 You have a complex parameterized query using several unnamed parameter.
@@ -26,9 +26,9 @@ Now in your javascript code you have to generate an array paying attention to th
 Sql moduleon lets you instead have named parameters right in your sql. You know what you manipulate.
 
 ```sql
-UPDATE user SET 
+UPDATE user SET
     surname  = {{= fullname }}
-  , age      = {{= age }}  
+  , age      = {{= age }}
   , fullname = {{= fullname }}
 ```
 ```js
@@ -104,5 +104,5 @@ npm install --dev
 npm test
 ```
 
-This module was tested with postgres and sqlite, 
+This module was tested with postgres and sqlite,
 it may not work with other DBMS
