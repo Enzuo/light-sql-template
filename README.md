@@ -1,5 +1,7 @@
 ![SqlModuleon](https://raw.githubusercontent.com/Enzuo/sql-moduleon/master/logo.png)
 
+[![Build Status](https://travis-ci.com/Enzuo/sql-moduleon.svg?branch=master)](https://travis-ci.com/Enzuo/sql-moduleon)
+
 ## What is it ?
 
 Sql-Moduleon is a very simple template engine for sql files.
