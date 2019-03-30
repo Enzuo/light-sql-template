@@ -21,12 +21,7 @@
     "sql"
   ],
   "author": "Enzuo",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/Enzuo/sql-moduleon/blob/master/LICENSE"
-    }
-  ],
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Enzuo/sql-moduleon/issues"
   },
@@ -35,5 +30,5 @@
     "mocha": "~6.0.2",
     "should": "^8.0.2"
   },
-  "tonicExampleFilename": "example/example.js"
+  "runkitExampleFilename": "example/example.js"
 }
