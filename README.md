@@ -76,7 +76,7 @@ UPDATE user SET
 
 ```javascript
 var moduleon = require('sql-moduleon');
-moduleon.setConfig({engine:'pg'});
+moduleon.setDefaultConfig({engine:'pg', array:'string'});
 
 var fs = require('fs');
 var sql = fs.readFileSync('./your/sqlfile.sql').toString();
