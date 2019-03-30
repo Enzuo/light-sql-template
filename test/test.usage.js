@@ -46,13 +46,13 @@ describe('Global usage', function() {
       col3: 5,
     });
     console.log(query.sql);
-    assert.equal(query.values[0], 1)
-    assert.equal(query.values[1], 2)
-    assert.equal(query.values[2], 3)
-    assert.equal(query.values[3], 4)
-    assert.equal(query.values[4], 'test1')
-    assert.equal(query.values[5], 5)
-    assert.equal(query.values[6], 5)
+    assert.equal(query.values[0], 1);
+    assert.equal(query.values[1], 2);
+    assert.equal(query.values[2], 3);
+    assert.equal(query.values[3], 4);
+    assert.equal(query.values[4], 'test1');
+    assert.equal(query.values[5], 5);
+    assert.equal(query.values[6], 5);
   });
 
 
@@ -90,6 +90,6 @@ function benchmark(nbRuns, testFunction){
   }
   var endTime = Date.now();
   var diffTime = endTime - startTime;
-  var log = `total ${diffTime}ms, avg ${diffTime/nbRuns}ms`;
+  var log = 'total ' + diffTime + 'ms, avg '+diffTime/nbRuns+'ms';
   console.log(log);
 }
