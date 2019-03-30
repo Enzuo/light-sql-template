@@ -38,15 +38,6 @@ function generateFunction( sql ){
 	var varname = 'data';
   var _code = 'var vals = [], out="";\n';
 
-  _code +='var transformParameter = ';
-  _code += config.engine === 'pg' ? transformParameter.pg.toString() : transformParameter.mysql.toString()
-  _code += ';\n';
-  _code +='var transformArray = '
-    + transformArray.split.toString()
-    + ';\n';
-  _code +='var transformValue = '
-    + transformValue.toString()
-    + ';\n';
 
 	var arr = sql.replace(/\s*<!\[CDATA\[\s*|\s*\]\]>\s*|[\r\t]|(\/\*[\s\S]*?\*\/)/g, ' ')
 		.split(tb).join(te +'\x1b')
@@ -59,10 +50,9 @@ function generateFunction( sql ){
 		else{
 			if(arr[m].charAt(1) === '='){
 				// console.log(JSON.stringify(arr[m]), arr[m].replace(/[^\w]/g, '.'), arr[m].substr(2).replace(/\s/g, ''))
-        var name = arr[m].substr(2).replace(/\s/g, '');
-        // _code += pushValueCode(varname, arr[m].substr(2).replace(/\s/g, ''));
+        var valName = arr[m].substr(2).replace(/\s/g, '');
         // TODO remove varname
-        _code += 'out+= transformValue(vals, '+ varname + '.' + name+');\n';
+        _code += transformValue(varname + '.' + valName, config);
       }
 			else if(arr[m].charAt(1) === '?' && arr[m].length === 2){
 				_code += '}';
@@ -94,32 +84,34 @@ function generateFunction( sql ){
 						Template Generator Helper Functions
 
 =================================================================*/
-function transformValue(vals, value){
-  if(Array.isArray(value)){
-    return transformArray(vals, value);
-  }
-  vals.push(value);
-  return transformParameter(vals);
+function transformValue(valName, config){
+  var _code = '';
+  _code += 'if(Array.isArray('+valName+')){';
+  _code +=   transformArray(valName, config);
+  _code += '} else {';
+  _code += '  vals.push('+valName+');';
+  _code += '  out += '+ transformParameter(config) + ';';
+  _code += '}';
+  return _code;
 }
 
-var transformArray = {
-  split : function (vals, arr){
-    var out = '';
-    for(var i=0; i < arr.length; i++){
-      vals.push(arr[i]);
-      out += i === 0 ? transformParameter(vals) : ','+transformParameter(vals);
-    }
-    return out;
-  }
-};
+function transformArray (valName, config){
+  var _code = '';
+  _code += 'for(var i=0; i < '+valName+'.length; i++){';
+  _code += '  vals.push('+valName+'[i]);';
+  _code += '  if(i === 0){';
+  _code += '    out +=' + transformParameter(config) + ';';
+  _code += '  } else {';
+  _code += '    out += \',\'+' + transformParameter(config) + ';';
+  _code += '  }';
+  _code += '}';
+  return _code;
+}
 
-var transformParameter = {
-  pg : function (vals){
-    return '$'+ vals.length;
-  },
-  mysql : function(
-
-  ){
-    return '?';
+function transformParameter (config) {
+  if(config.engine === 'pg'){
+    return '\'$\' + vals.length';
+  } else {
+    return '\'?\'';
   }
-};
+}
