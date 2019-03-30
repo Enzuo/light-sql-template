@@ -68,6 +68,23 @@ describe('Operators : template tags', function() {
 			assert.equal(request_obj.values[1], 5 );
 
 			done();
+    });
+
+    it('should transform array {{= my_array }} with config string', function (done) {
+
+			var _sql = 'SELECT * FROM table WHERE id IN ({{= my_array }})';
+
+			var tplFunc = moduleon(_sql, {array: 'string'});
+			var request_obj = tplFunc({ my_array: [3,5] });
+
+			//sql
+			assert.equal(request_obj.sql   , 'SELECT * FROM table WHERE id IN (?)');
+
+			//values
+			assert.equal(request_obj.values.length, 1);
+			assert.equal(request_obj.values[0], '3,5' );
+
+			done();
 		});
 
 		it('should be able to access nested values {{= obj.id }}', function (done) {

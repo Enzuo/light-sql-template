@@ -2,11 +2,15 @@
 
 // Declare defaults options or take provided options
 // =================================================
-var config = {
-	engine : 'mysql',
-
+var defaultConfig = {};
+var setDefaultConfig = function( opts ){
+  defaultConfig = Object.assign({
+    engine : 'mysql',
+    array : 'split',
+  }, opts);
 };
 
+setDefaultConfig();
 
 /*=====================================================================
 
@@ -18,20 +22,16 @@ var config = {
  *
  * @return {Function} template function
  */
-module.exports = function( sql ) {
-	return generateFunction( sql );
-};
+module.exports = generateFunction;
 
-module.exports.setConfig = function( opts ){
-	config.engine = opts.engine || config.engine;
-};
-
+module.exports.setDefaultConfig = setDefaultConfig;
 
 /**
  * @param  {String} sql : sql template to generate the template function from
  * @return {Function} template function
  */
-function generateFunction( sql ){
+function generateFunction( sql, config ){
+  config = Object.assign({}, defaultConfig, config);
 
 	var tb = '{{';
 	var te = '}}';
@@ -97,15 +97,21 @@ function transformValue(valName, config){
 
 function transformArray (valName, config){
   var _code = '';
-  _code += 'for(var i=0; i < '+valName+'.length; i++){';
-  _code += '  vals.push('+valName+'[i]);';
-  _code += '  if(i === 0){';
-  _code += '    out +=' + transformParameter(config) + ';';
-  _code += '  } else {';
-  _code += '    out += \',\'+' + transformParameter(config) + ';';
-  _code += '  }';
-  _code += '}';
-  return _code;
+  if(config.array === 'string'){
+    _code += 'vals.push('+valName+'.join(\',\'));';
+    _code += 'out +=' + transformParameter(config) + ';';
+    return _code;
+  } else {
+    _code += 'for(var i=0; i < '+valName+'.length; i++){';
+    _code += '  vals.push('+valName+'[i]);';
+    _code += '  if(i === 0){';
+    _code += '    out +=' + transformParameter(config) + ';';
+    _code += '  } else {';
+    _code += '    out += \',\'+' + transformParameter(config) + ';';
+    _code += '  }';
+    _code += '}';
+    return _code;
+  }
 }
 
 function transformParameter (config) {
