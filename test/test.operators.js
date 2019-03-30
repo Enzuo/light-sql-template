@@ -1,6 +1,5 @@
 'use strict';
 
-require('should');
 var assert = require('assert');
 var moduleon = require('../index');
 
@@ -157,19 +156,31 @@ describe('Operators : template tags', function() {
 	});
 
 	describe('javascript tags', function(){
-	it('should append javascript as is with {{ code }}', function (done){
-		var _sql = 'SELECT * FROM table {{ var a = 5; }} WHERE id = {{ out += a; }} AND {{ out += \'"Column"\'; }} = \'constant\'';
-		var tplFunc = moduleon(_sql);
-		var request_obj = tplFunc();
-		assert.equal(request_obj.sql.trim(), 'SELECT * FROM table  WHERE id = 5 AND "Column" = \'constant\'' );
-		done();
-	});
+		it('should append javascript as is with {{ code }}', function (done){
+			var _sql = 'SELECT * FROM table {{ var a = 5; }} WHERE id = {{ out += a; }} AND {{ out += \'"Column"\'; }} = \'constant\'';
+			var tplFunc = moduleon(_sql);
+			var request_obj = tplFunc();
+			assert.equal(request_obj.sql.trim(), 'SELECT * FROM table  WHERE id = 5 AND "Column" = \'constant\'' );
+			done();
+		});
 
-	it('should append javascript as is with {{ code }} and do loops', function (done){
-		var _sql = '{{ for(var i=0; i < data.nbIter; i++){ }} SELECT * FROM table ; {{ } }}';
-		var tplFunc = moduleon(_sql);
-		var request_obj = tplFunc({nbIter: 3});
-		assert.equal(request_obj.sql.trim(), 'SELECT * FROM table ;  SELECT * FROM table ;  SELECT * FROM table ;' );
-		done();
+		it('should append javascript as is with {{ code }} and do loops', function (done){
+			var _sql = '{{ for(var i=0; i < data.nbIter; i++){ }} SELECT * FROM table ; {{ } }}';
+			var tplFunc = moduleon(_sql);
+			var request_obj = tplFunc({nbIter: 3});
+			assert.equal(request_obj.sql.trim(), 'SELECT * FROM table ;  SELECT * FROM table ;  SELECT * FROM table ;' );
+			done();
+		});
+
+		it.skip('should declare a var and be able to use it', function(done){
+			var _sql = '{{ var a = 5; }} SELECT {{= a }}, {{= b }}';
+			var tplFunc = moduleon(_sql);
+			var request_obj = tplFunc({b: 3});
+			assert.equal(request_obj.sql.trim(), 'SELECT ?, ?');
+			assert.equal(request_obj.values.length, 2);
+			assert.equal(request_obj.values[0], 5 );
+			assert.equal(request_obj.values[1], 3 );
+			done();
+		});
 	});
 });

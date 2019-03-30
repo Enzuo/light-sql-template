@@ -1,6 +1,5 @@
 'use strict';
 
-require('should');
 var assert = require('assert');
 var moduleon = require('../index');
 
