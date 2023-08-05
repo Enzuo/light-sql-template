@@ -5,45 +5,52 @@
 ## What is it ?
 
 Sql-Moduleon is a very simple template engine for sql files.
+It lets us add template tags in sql and let us focus on the queries.
+It leverage the tools already in place to make secure queries and let us separate our concerns.
 
-It lets you add template tags and easily write meaningful sql files, while still keeping security in mind.
 
-## Problem it resolves
+## Why
+We want to leverage the performance and convinence of using raw sql in our application BUT using sql in our application code can feel messy especially when our query starts to get big.
+We want to **avoid mixxing sql with js** which makes it harder to read, maintain and keep secure.
 
-#### Before
-```sql
-UPDATE user SET
-    surname = ?
-  , age = ?
-  , fullname = ?
-```
-You have a complex parameterized query using several unnamed parameter.
+### Before
 
-Now in your javascript code you have to generate an array paying attention to the order.
 ```js
-['luke', 19, 'luke']
+  // somewhat better looking but insecure by default
+  sql = `UPDATE user SET
+                name = ${fullname}
+              , age = ${age}
+              , fullname = ${fullname}`
+
+  // have to keep track of the ? to get the values in the right order, every change is a pain
+  sql = `UPDATE user SET
+                name = ?
+              , age = ?
+              , fullname = ?`
+  values = [fullname, age, fullname]
 ```
 
-#### After
-Sql moduleon lets you instead have named parameters right in your sql. You know what you manipulate.
-
+### After
+Sql file where we focus on the sql
 ```sql
 UPDATE user SET
-    surname  = {{= fullname }}
+    name     = {{= fullname }}
   , age      = {{= age }}
   , fullname = {{= fullname }}
 ```
+
+Js file where we focus on the js
 ```js
-{fullname: 'luke', age: 19}
+const {sql, values} = moduleon( sql )({fullname: 'luke', age: 19});
 ```
-- It lets you write plain .sql files without having to mixx it in your javascript while staying simple to build.
 
-- The javascript part doesn't have to know the query structure. It just gives it the data and the query handles it.
 
-## What it won't do for you
+## What it is not
 
 - no sql file loading
 - no database query execution
+
+---
 
 # General concept
 
