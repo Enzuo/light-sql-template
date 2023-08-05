@@ -3,7 +3,7 @@
 // Declare defaults options or take provided options
 // =================================================
 var defaultConfig = {};
-var setDefaultConfig = function( opts ){
+function setDefaultConfig ( opts ){
   defaultConfig = Object.assign({
     engine : 'mysql',
     array : 'split',
@@ -17,20 +17,23 @@ setDefaultConfig();
 									Interface
 
 =====================================================================*/
-/**
- * @param  {Object} opts (Optional) :
- *
- * @return {Function} template function
- */
-module.exports = generateFunction;
+module.exports = generateTemplateFunction;
 
 module.exports.setDefaultConfig = setDefaultConfig;
 
 /**
- * @param  {String} sql : sql template to generate the template function from
- * @return {Function} template function
+ * sql moduleon generate template function whom generate plain sql & parameter values
+ * @callback templateFunction
+ * @param {array} data
+ * @return {{sql:string, values:array}}
  */
-function generateFunction( sql, config ){
+
+/**
+ * @param {String} sql : sql template to generate the template function from
+ * @param {object} config
+ * @return {(data:object) => {sql:string, values:array}} template function
+ */
+function generateTemplateFunction( sql, config ){
   config = Object.assign({}, defaultConfig, config);
 
 	var tb = '{{';
