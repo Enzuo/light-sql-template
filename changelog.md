@@ -1,8 +1,9 @@
 #Changelog
 
-## 2.0.0 - 2019-xx-xx
+## 2.0.0 - 2024-xx-xx
   - Remove template management functionality. Keep the functionnality to its core, the templating engine.
 	- Transform array to several parameters with value operator {{= array }}
+  - Add typescript types definition .d.ts inferred from jsdoc
 
 
 ## [1.2.0] - 2016-02-28

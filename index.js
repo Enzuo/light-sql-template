@@ -30,7 +30,7 @@ module.exports.setDefaultConfig = setDefaultConfig;
 
 /**
  * @param {String} sql : sql template to generate the template function from
- * @param {object} config
+ * @param {object=} config
  * @return {(data:object) => {sql:string, values:array}} template function
  */
 function generateTemplateFunction( sql, config ){

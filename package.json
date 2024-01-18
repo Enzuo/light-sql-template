@@ -4,7 +4,8 @@
   "description": "A lightweight module used to process .sql templates tags",
   "main": "index.js",
   "scripts": {
-    "preversion": "npm test",
+    "preversion": "npm test && npm run typings",
+    "typings": "npx tsc --allowJs --checkJs --declaration --declarationDir typings --emitDeclarationOnly --skipLibCheck --lib es6,dom index.js ",
     "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "repository": {
@@ -13,7 +14,8 @@
   },
   "files": [
     "/example",
-    "/index.js"
+    "/index.js",
+    "/typings"
   ],
   "keywords": [
     "light",
@@ -22,6 +24,7 @@
   ],
   "author": "Enzuo",
   "license": "MIT",
+  "typings": "typings/index.d.ts",
   "bugs": {
     "url": "https://github.com/Enzuo/sql-moduleon/issues"
   },
