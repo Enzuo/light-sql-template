@@ -2,9 +2,12 @@ var moduleon = require('sql-moduleon');
 
 var sql = '{{? shouldSelect }}SELECT * FROM table WHERE id= {{= id }}{{?}}';
 
-var template = moduleon( sql );
+var sqlFn = moduleon( sql );
 
-var query = template({ shouldSelect : true, id : 3 });
+var {sql, values} = sqlFn({ shouldSelect : true, id : 3 });
 
-console.log('request : '+query.sql);
-console.log('values : '+query.values);
+console.log('query : ', sql);
+console.log('values : ', values);
+
+// execute the parameterized query
+// db.query(sql, values)

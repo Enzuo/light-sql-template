@@ -4,33 +4,45 @@
 
 ## What is it ?
 
-Sql-Moduleon is a very simple template engine for sql files.
-It lets us add template tags in sql and let us focus on the queries.
-It leverage the tools already in place to make secure queries and let us separate our concerns.
+Sql-Moduleon is a very simple template engine to use .sql files in js.
+- Add template tags in sql and let us focus on the queries.
+- Ensure sql and js logic stay seperated.
+- Leverage the power of parameterized query to stay safe.
+- Compile into function to be as fast as possible.
+
+[See what it looks like](#with-sql-moduleon)
 
 
-## Why
-We want to leverage the performance and convinence of using raw sql in our application BUT using sql in our application code can feel messy especially when our query starts to get big.
-We want to **avoid mixxing sql with js** which makes it harder to read, maintain and keep secure.
+## Why use sql-moduleon
+- We want to leverage the performance and convinence of using raw sql in our application BUT using sql in our application code can feel messy especially when our queries start to get big.
+- We want to **avoid mixxing sql with js** which makes it harder to read, harder to maintain and keep secure.
 
-### Before
+### Without sql-moduleon
 
 ```js
-  // somewhat better looking but insecure by default
+  // about as good looking as we can get but insecure by default
   sql = `UPDATE user SET
                 name = ${fullname}
               , age = ${age}
               , fullname = ${fullname}`
 
-  // have to keep track of the ? to get the values in the right order, every change is a pain
+  // have to keep track of the arguments order, every change in a big query is a pain
   sql = `UPDATE user SET
                 name = ?
               , age = ?
               , fullname = ?`
   values = [fullname, age, fullname]
+
+  // using prisma sql is pretty good and safe
+  // but you still have to write your sql in your js files
+  // not ideal for big queries
+  Prisma.sql`UPDATE user SET
+                name = ${fullname}
+              , age = ${age}
+              , fullname = ${fullname}`
 ```
 
-### After
+### With sql-moduleon
 Sql file where we focus on the sql
 ```sql
 UPDATE user SET
@@ -41,7 +53,8 @@ UPDATE user SET
 
 Js file where we focus on the js
 ```js
-const {sql, values} = moduleon( sql )({fullname: 'luke', age: 19});
+const data = {fullname: 'luke', age: 19}
+const {sql, values} = moduleon( sql )( data );
 ```
 
 
@@ -55,12 +68,42 @@ const {sql, values} = moduleon( sql )({fullname: 'luke', age: 19});
 # General concept
 
 - Write your .sql files with templates tags
-- Load your templatized .sql files
-- **Transform your templatized sql into a function that generate a plain parametrized query** *<-- sql-Moduleon's job*
-- Use the generated function with your data
-- Feed the query to your database
+- Load your .sql files
+- **Transform your sql into a function that generate parametrized queries** *<-- sql-Moduleon's job*
+- Call the sql function with your data
+- Send the parameterized query to your database
 
-# Available templates tags
+# Installation
+
+`npm install sql-moduleon --save`
+
+or using yarn
+
+`yarn add sql-moduleon`
+
+## Usage example
+
+```javascript
+var moduleon = require('sql-moduleon');
+moduleon.setDefaultConfig({ engine:'pg', array:'string' });
+
+var fs = require('fs');
+var sql = fs.readFileSync('./your/sqlfile.sql', 'utf-8');
+
+// -> sql-moduleon <-
+const data = { title : 'value' }
+const sqlTemplateFunction = moduleon( sql );
+const { sql, values } = sqlTemplateFunction( data );
+
+//use your DB engine to execute the parameterized query
+db.query( sql, values );
+```
+
+
+
+# Documentation
+
+## Available templates tags
 
 - **Condition**
 
@@ -81,32 +124,9 @@ const {sql, values} = moduleon( sql )({fullname: 'luke', age: 19});
   simply throw in javascript code in the template function to add advanced logic
 
 
-# Usage example
+# Contrib
 
-```javascript
-var moduleon = require('sql-moduleon');
-moduleon.setDefaultConfig({engine:'pg', array:'string'});
-
-var fs = require('fs');
-var sql = fs.readFileSync('./your/sqlfile.sql').toString();
-
-// sql-moduleon
-var sqlTemplateFunction = moduleon( sql );
-var sqlRequest = sqlTemplateFunction({ key : value });
-
-//use your DB engine to execute the generated request
-db.query(sqlRequest.sql, sqlRequest.values);
-```
-
-# Installation
-
-`npm install sql-moduleon --save`
-
-or using yarn
-
-`yarn add sql-moduleon`
-
-## tests
+## Tests
 
 ```
 npm install --dev
