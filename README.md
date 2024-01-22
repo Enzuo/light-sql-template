@@ -135,3 +135,12 @@ npm test
 
 This module was tested with postgres and sqlite,
 it may not work with other DBMS
+
+## Publish
+
+
+whitelist in package.json "files"
+
+### Preview
+
+`npx publish-preview`
